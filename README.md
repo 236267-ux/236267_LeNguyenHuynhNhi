@@ -1,1 +1,2 @@
 - Đã cấu hình MongoDB Atlas
+- Cau 5: Đã đóng gói thành công ứng dụng bằng Docker và Docker Compose.
