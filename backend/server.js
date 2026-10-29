@@ -5,7 +5,14 @@ require('dotenv').config();
 
 const Food = require('./models/Food');
 const app = express();
-app.use(cors());
+
+// Cấu hình CORS mở rộng cho phép Frontend Render kết nối
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Kết nối MongoDB Atlas
@@ -13,12 +20,15 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Kết nối MongoDB thành công'))
   .catch(err => console.error('Lỗi kết nối MongoDB:', err));
 
+// Route mặc định cho Backend
+app.get('/', (req, res) => {
+  res.status(200).send('Backend API đang hoạt động mượt mà!');
+});
+
 // Endpoint kiểm tra trạng thái backend
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'Backend đang hoạt động', timestamp: new Date() });
 });
-
-
 
 // 1. Lấy danh sách & Tìm kiếm (GET /api/foods)
 app.get('/api/foods', async (req, res) => {
